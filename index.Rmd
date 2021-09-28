@@ -1,0 +1,19 @@
+---
+title: "Abdullah (Arby) Abood"
+image: "arby.jpeg"
+links:
+  - label: LinkedIn
+    url: "https://www.linkedin.com/in/abdullah-arby-abood-7964238b/"
+  - label: Website
+    url: "https://arby-abood.netlify.app/"
+  - label: Twitter
+    url: "https://twitter.com/ArbyAbood"
+  - label: GitHub
+    url: "https://github.com/aa9gj"
+  - label: Email
+    url: "mailto:aa9gj@virginia.edu"
+output:
+  postcards::jolla
+---
+ 
+I’m a PhD candidate, bioinformatician and data scientist at The University of Virginia School of Medicine. My research focuses on identifying theraputics targets for ostoeoporosis using system genetics. I am currently integrating genome-wide assocition studies, splice quanitative trait loci, long-read RNA sequencing, and proteomics to identify novel isoforms as candidate targets for theraputics. I love talking about genomics, bioinformatics, soccer, and cooking. 
