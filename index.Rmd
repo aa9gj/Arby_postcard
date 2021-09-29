@@ -8,6 +8,8 @@ links:
     url: "https://arby-abood.netlify.app/"
   - label: Twitter
     url: "https://twitter.com/ArbyAbood"
+  - label: Google Scholar
+    url: "https://scholar.google.com/citations?user=bN1CqSQAAAAJ&hl=en&oi=ao"
   - label: GitHub
     url: "https://github.com/aa9gj"
   - label: Email
