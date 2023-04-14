@@ -1,5 +1,5 @@
 ---
-title: "Abdullah (Arby) Abood"
+title: "Abdullah (Arby) Abood, Ph.D."
 image: "arby.jpeg"
 links:
   - label: LinkedIn
@@ -18,4 +18,4 @@ output:
   postcards::jolla
 ---
  
-I’m a PhD candidate, bioinformatician and data scientist at The University of Virginia School of Medicine. My research focuses on identifying therapeutic targets for osteoporosis using systems genetics. I am currently integrating genome-wide association studies, splice quantitative trait loci, long-read RNA sequencing, and proteomics to identify novel isoforms as candidate causal mediators of disease. I love talking about genomics, bioinformatics, soccer, and cooking. 
+Incoming senior scientist in computation biology at Hill's PNC. Former trainee in the Farber Lab at the Center for Public Health Genomics at The University of Virginia School of Medicine. My research focused on identifying therapeutic targets for osteoporosis using systems genetics. I worked on integrating genome-wide association studies, splice quantitative trait loci, long-read RNA sequencing, and proteomics to identify novel isoforms as candidate causal mediators of disease. I love talking about genomics, bioinformatics, soccer, and cooking. 
