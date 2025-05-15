@@ -3,7 +3,7 @@ title: "Abdullah (Arby) Abood, Ph.D."
 image: "arby.jpeg"
 links:
   - label: LinkedIn
-    url: "https://www.linkedin.com/in/abdullah-arby-abood-7964238b/"
+    url: "https://www.linkedin.com/in/arby-abood-7964238b/"
   - label: Website
     url: "https://arby-abood.netlify.app/"
   - label: Twitter
@@ -13,9 +13,15 @@ links:
   - label: GitHub
     url: "https://github.com/aa9gj"
   - label: Email
-    url: "mailto:aa9gj@virginia.edu"
+    url: "mailto:arbyaboodphd@gmail.com"
 output:
   postcards::jolla
 ---
  
-Incoming senior scientist in computation biology at Hill's PNC. Former trainee in the Farber Lab at the Center for Public Health Genomics at The University of Virginia School of Medicine. My research focused on identifying therapeutic targets for osteoporosis using systems genetics. I worked on integrating genome-wide association studies, splice quantitative trait loci, long-read RNA sequencing, and proteomics to identify novel isoforms as candidate causal mediators of disease. I love talking about genomics, bioinformatics, soccer, and cooking. 
+I'm a computational biologist currently working at Colgate-Palmolive, where I lead multi-omics and clinical biomarker projects to support precision health and translational research.
+
+Previously, I completed my PhD at the University of Virginia in the Center for Public Health Genomics, where I focused on identifying therapeutic targets for osteoporosis using systems genetics and integrative multi-omics (including GWAS, sQTL, eQTL, long-read RNA-seq, scRNAseq, and proteomics).
+
+I specialize in turning messy biological data into structured, reproducible insights. I’m now expanding into clinical trial operations and regulated project delivery in the life sciences industry.
+
+Outside of work, I’m into soccer, cooking, and translating genomics for non-specialists.
