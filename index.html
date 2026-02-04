@@ -6,6 +6,9 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
     <title>Abdullah (Arby) Abood</title>
 
+    <!-- PDF.js for rendering PDF as clean images -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+
     <style>
       *, *::before, *::after { box-sizing: border-box; }
 
@@ -38,8 +41,7 @@
 
       .right-panel {
         flex: 1;
-        display: flex;
-        flex-direction: column;
+        overflow-y: auto;
         background: #e9ecef;
         border-left: 1px solid #dee2e6;
       }
@@ -76,49 +78,27 @@
         margin: 0.25rem;
       }
 
-      /* ── Right panel (resume) ── */
-      .resume-header {
+      /* ── Right panel (resume as paper) ── */
+      .resume-scroll {
+        padding: 2rem;
         display: flex;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        padding: 0.75rem 1rem;
-        background: #343a40;
-        color: #fff;
-        flex-shrink: 0;
+        gap: 1.5rem;
       }
 
-      .resume-header h5 {
-        margin: 0;
-        font-size: 1rem;
-        font-weight: 600;
-      }
-
-      .resume-header .btn-upload {
+      .page-wrapper {
         background: #fff;
-        color: #343a40;
-        border: none;
-        padding: 0.35rem 0.85rem;
-        border-radius: 4px;
-        font-size: 0.82rem;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background 0.2s;
-      }
-
-      .resume-header .btn-upload:hover {
-        background: #e2e6ea;
-      }
-
-      .resume-viewer {
-        flex: 1;
-        position: relative;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+        border-radius: 2px;
         overflow: hidden;
+        line-height: 0; /* remove gap below canvas */
       }
 
-      .resume-viewer iframe {
+      .page-wrapper canvas {
+        display: block;
         width: 100%;
-        height: 100%;
-        border: none;
+        height: auto;
       }
 
       /* Placeholder when no PDF is loaded */
@@ -127,7 +107,7 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        height: 100%;
+        min-height: 80vh;
         color: #6c757d;
         padding: 2rem;
         text-align: center;
@@ -142,44 +122,6 @@
       .resume-placeholder p {
         max-width: 320px;
         line-height: 1.5;
-      }
-
-      .resume-placeholder .btn-upload-large {
-        margin-top: 1rem;
-        background: #343a40;
-        color: #fff;
-        border: none;
-        padding: 0.6rem 1.5rem;
-        border-radius: 4px;
-        font-size: 0.95rem;
-        cursor: pointer;
-        font-weight: 500;
-        transition: background 0.2s;
-      }
-
-      .resume-placeholder .btn-upload-large:hover {
-        background: #23272b;
-      }
-
-      .drop-overlay {
-        display: none;
-        position: absolute;
-        inset: 0;
-        background: rgba(52, 58, 64, 0.85);
-        color: #fff;
-        font-size: 1.3rem;
-        font-weight: 600;
-        z-index: 10;
-        align-items: center;
-        justify-content: center;
-        pointer-events: none;
-        border: 3px dashed #fff;
-        margin: 8px;
-        border-radius: 8px;
-      }
-
-      .drop-overlay.active {
-        display: flex;
       }
 
       /* ── Mobile: stack vertically ── */
@@ -199,9 +141,14 @@
 
         .right-panel {
           flex: none;
-          height: 90vh;
+          min-height: 80vh;
           border-left: none;
           border-top: 1px solid #dee2e6;
+          overflow-y: auto;
+        }
+
+        .resume-scroll {
+          padding: 1rem;
         }
       }
     </style>
@@ -254,107 +201,73 @@
         </div>
       </div>
 
-      <!-- ═══════ RIGHT: Resume ═══════ -->
-      <div class="right-panel" id="resumePanel">
-        <div class="resume-header">
-          <h5>Resume</h5>
-          <button class="btn-upload" onclick="document.getElementById('pdfInput').click()">
-            Upload New PDF
-          </button>
-          <input type="file" id="pdfInput" accept="application/pdf" style="display:none">
+      <!-- ═══════ RIGHT: Resume (rendered as paper) ═══════ -->
+      <div class="right-panel">
+        <div class="resume-scroll" id="resumePages">
+          <!-- PDF pages will be rendered here as canvases -->
         </div>
 
-        <div class="resume-viewer" id="resumeViewer">
-          <div class="drop-overlay" id="dropOverlay">Drop PDF here</div>
-
-          <!-- This iframe loads resume.pdf from the repo by default -->
-          <iframe id="resumeFrame" src="resume.pdf" style="display:none;"></iframe>
-
-          <!-- Placeholder shown if resume.pdf is missing -->
-          <div class="resume-placeholder" id="resumePlaceholder">
-            <div class="icon">&#128196;</div>
-            <h5>No Resume Loaded</h5>
-            <p>
-              Drop a PDF here, click the button below, or add a <code>resume.pdf</code> file to the repository and redeploy.
-            </p>
-            <button class="btn-upload-large" onclick="document.getElementById('pdfInput').click()">
-              Upload PDF
-            </button>
-          </div>
+        <!-- Placeholder if resume.pdf is missing -->
+        <div class="resume-placeholder" id="resumePlaceholder" style="display:none;">
+          <div class="icon">&#128196;</div>
+          <h5>No Resume Loaded</h5>
+          <p>Add a <code>resume.pdf</code> file to the repository and redeploy.</p>
         </div>
       </div>
-    </div>
 
-    <!-- Hidden file input for resume upload -->
+    </div>
 
     <script>
     (function() {
-      var frame       = document.getElementById('resumeFrame');
-      var placeholder = document.getElementById('resumePlaceholder');
-      var fileInput   = document.getElementById('pdfInput');
-      var viewer      = document.getElementById('resumeViewer');
-      var overlay     = document.getElementById('dropOverlay');
+      // Point PDF.js to its worker
+      pdfjsLib.GlobalWorkerOptions.workerSrc =
+        'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
 
-      /* ── Try loading the default resume.pdf ── */
-      function tryLoadDefault() {
-        var xhr = new XMLHttpRequest();
-        xhr.open('HEAD', 'resume.pdf', true);
-        xhr.onload = function() {
-          if (xhr.status >= 200 && xhr.status < 300) {
-            showResume('resume.pdf');
-          } else {
-            showPlaceholder();
+      var pagesContainer = document.getElementById('resumePages');
+      var placeholder    = document.getElementById('resumePlaceholder');
+
+      function renderPDF(source) {
+        var loadingTask = pdfjsLib.getDocument(source);
+        loadingTask.promise.then(function(pdf) {
+          // Clear any previous pages
+          pagesContainer.innerHTML = '';
+          pagesContainer.style.display = 'flex';
+          placeholder.style.display = 'none';
+
+          var totalPages = pdf.numPages;
+          for (var i = 1; i <= totalPages; i++) {
+            renderPage(pdf, i);
           }
-        };
-        xhr.onerror = function() {
-          showPlaceholder();
-        };
-        xhr.send();
+        }).catch(function() {
+          // PDF failed to load — show placeholder
+          pagesContainer.style.display = 'none';
+          placeholder.style.display = 'flex';
+        });
       }
 
-      function showResume(src) {
-        frame.src = src;
-        frame.style.display = 'block';
-        placeholder.style.display = 'none';
+      function renderPage(pdf, pageNum) {
+        pdf.getPage(pageNum).then(function(page) {
+          // Render at 2x for crispness, CSS scales it down
+          var scale = 2;
+          var viewport = page.getViewport({ scale: scale });
+
+          var wrapper = document.createElement('div');
+          wrapper.className = 'page-wrapper';
+
+          var canvas = document.createElement('canvas');
+          canvas.width = viewport.width;
+          canvas.height = viewport.height;
+
+          wrapper.appendChild(canvas);
+          pagesContainer.appendChild(wrapper);
+
+          var ctx = canvas.getContext('2d');
+          page.render({ canvasContext: ctx, viewport: viewport });
+        });
       }
 
-      function showPlaceholder() {
-        frame.style.display = 'none';
-        placeholder.style.display = 'flex';
-      }
-
-      /* ── File input handler ── */
-      fileInput.addEventListener('change', function(e) {
-        var file = e.target.files[0];
-        if (file && file.type === 'application/pdf') {
-          var url = URL.createObjectURL(file);
-          showResume(url);
-        }
-      });
-
-      /* ── Drag-and-drop ── */
-      viewer.addEventListener('dragover', function(e) {
-        e.preventDefault();
-        overlay.classList.add('active');
-      });
-
-      viewer.addEventListener('dragleave', function(e) {
-        e.preventDefault();
-        overlay.classList.remove('active');
-      });
-
-      viewer.addEventListener('drop', function(e) {
-        e.preventDefault();
-        overlay.classList.remove('active');
-        var file = e.dataTransfer.files[0];
-        if (file && file.type === 'application/pdf') {
-          var url = URL.createObjectURL(file);
-          showResume(url);
-        }
-      });
-
-      /* ── Init ── */
-      tryLoadDefault();
+      // Try loading resume.pdf from the repo
+      renderPDF('resume.pdf');
     })();
     </script>
 
