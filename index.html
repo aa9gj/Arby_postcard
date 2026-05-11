@@ -44,7 +44,8 @@
 
       .right-panel {
         flex: 1;
-        overflow: hidden;
+        height: 100vh;
+        overflow-y: auto;
         background: #e9ecef;
         border-left: 1px solid #dee2e6;
       }
@@ -99,8 +100,7 @@
 
       /* Right panel (resume as paper) */
       .resume-scroll {
-        height: 100%;
-        overflow-y: auto;
+        min-height: 100%;
         padding: 2rem;
         display: flex;
         flex-direction: column;
@@ -120,7 +120,6 @@
       .page-wrapper canvas {
         display: block;
         width: 100%;
-        height: auto;
       }
 
       /* Placeholder when no PDF is loaded */
@@ -167,6 +166,7 @@
 
         .right-panel {
           flex: none;
+          height: auto;
           min-height: 80vh;
           border-left: none;
           border-top: 1px solid #dee2e6;
@@ -174,8 +174,6 @@
         }
 
         .resume-scroll {
-          height: auto;
-          overflow: visible;
           padding: 1rem;
         }
 
@@ -309,10 +307,13 @@
 
           var wrapper = document.createElement('div');
           wrapper.className = 'page-wrapper';
+          wrapper.style.aspectRatio = viewport.width + ' / ' + viewport.height;
 
           var canvas = document.createElement('canvas');
           canvas.width = viewport.width;
           canvas.height = viewport.height;
+          canvas.style.aspectRatio = viewport.width + ' / ' + viewport.height;
+          canvas.style.height = 'auto';
 
           wrapper.appendChild(canvas);
           pagesContainer.appendChild(wrapper);
