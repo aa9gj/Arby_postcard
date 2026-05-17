@@ -88,14 +88,24 @@
 
       .postcard hr { width: 60%; margin: 1.25rem auto; }
 
-      .postcard .links { margin-top: 0.5rem; }
+      .postcard .links {
+        align-items: center;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.35rem;
+        justify-content: center;
+        margin-top: 0.5rem;
+      }
 
       .postcard .links a {
         text-decoration: none;
       }
 
       .postcard .links .btn {
-        margin: 0.25rem;
+        font-size: 0.9rem;
+        margin: 0;
+        padding: 0.35rem 0.55rem;
+        white-space: nowrap;
       }
 
       .recommendations {
@@ -320,12 +330,11 @@
           <hr>
 
           <div class="links" aria-label="Professional links">
-            <a class="btn btn-outline-dark mb-2" href="https://www.linkedin.com/in/arby-abood-7964238b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
-            <a class="btn btn-outline-dark mb-2" href="https://twitter.com/ArbyAbood" target="_blank" rel="noopener noreferrer">Twitter</a>
-            <a class="btn btn-outline-dark mb-2" href="https://scholar.google.com/citations?user=bN1CqSQAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener noreferrer">Google Scholar</a>
-            <a class="btn btn-outline-dark mb-2" href="https://github.com/aa9gj" target="_blank" rel="noopener noreferrer">GitHub</a>
-            <a class="btn btn-outline-dark mb-2" href="mailto:arbyaboodphd@gmail.com">Email</a>
-            <a class="btn btn-dark mb-2" href="resume.pdf" download="Abood_resume_2026.pdf">&#11015; Download Resume</a>
+            <a class="btn btn-outline-dark" href="https://www.linkedin.com/in/arby-abood-7964238b/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+            <a class="btn btn-outline-dark" href="https://scholar.google.com/citations?user=bN1CqSQAAAAJ&amp;hl=en&amp;oi=ao" target="_blank" rel="noopener noreferrer">Google Scholar</a>
+            <a class="btn btn-outline-dark" href="https://github.com/aa9gj" target="_blank" rel="noopener noreferrer">GitHub</a>
+            <a class="btn btn-outline-dark" href="mailto:arbyaboodphd@gmail.com">Email</a>
+            <a class="btn btn-outline-dark" href="resume.pdf" download="Abood_resume_2026.pdf">&#11015; Download Resume</a>
           </div>
 
           <section class="recommendations" aria-labelledby="recommendations-heading">
